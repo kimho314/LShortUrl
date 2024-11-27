@@ -1,7 +1,9 @@
 package com.example.lshorturl.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -10,18 +12,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "short_url")
+@Table(name = "shorten_url", indexes = @Index(name = "shorten_url_idx1", columnList = "long_url"))
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class ShortUrl {
+public class ShortenUrl {
 
     @Id
+    @Column(name = "id")
     private String id;
 
+    @Column(name = "short_url")
     private String shortUrl;
 
+    @Column(name = "long_url")
     private String longUrl;
-
 }
