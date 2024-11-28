@@ -12,7 +12,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "shorten_url", indexes = @Index(name = "shorten_url_idx1", columnList = "long_url"))
+@Table(name = "shorten_url", indexes = {@Index(name = "shorten_url_idx1", columnList = "long_url"),
+    @Index(name = "shorten_url_idx2", columnList = "short_url")})
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

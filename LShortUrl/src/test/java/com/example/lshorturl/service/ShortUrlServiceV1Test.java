@@ -8,11 +8,13 @@ import com.example.lshorturl.dto.SaveShortenUrlResponseDto;
 import com.example.lshorturl.entity.ShortenUrl;
 import com.example.lshorturl.repository.ShortUrlRepository;
 import com.example.lshorturl.utils.ShortenUrlGeneratorImpl;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.function.Executable;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -65,5 +67,39 @@ public class ShortUrlServiceV1Test {
 
         //then
         Assertions.assertEquals(shortenUrl, saveShortenUrlResponseDto.shortenUrl());
+    }
+
+    @Test
+    @DisplayName("원래 url 조회")
+    void getLongUrlTest() {
+        //given
+        String longUrl = "https://io.cjconnect.unban.ai/cjconnect/service/api/driver/faq/v1/category-meta-list";
+        String uniqueId = "nanoId: 1BVhLZF6pQEIqPAmsHMo3";
+        String shortenUrl = "http://tiny.com/T1IE1ozloHPO4eflBZs7s4wjOjFD";
+
+        Mockito.when(shortUrlRepository.findByShortUrl(anyString()))
+            .thenReturn(Optional.of(new ShortenUrl(uniqueId, shortenUrl, longUrl)));
+        //when
+        String foundLongUrl = shortUrlServiceV1.getLongUrl(shortenUrl);
+
+        //then
+        Assertions.assertEquals(longUrl, foundLongUrl);
+    }
+
+    @Test
+    @DisplayName("원래 url 조회 - 단축 url 데이터 없으면 예외 발생")
+    void getLongUrlTest_NoFoundException() {
+        //given
+        String longUrl = "https://io.cjconnect.unban.ai/cjconnect/service/api/driver/faq/v1/category-meta-list";
+        String uniqueId = "nanoId: 1BVhLZF6pQEIqPAmsHMo3";
+        String shortenUrl = "http://tiny.com/T1IE1ozloHPO4eflBZs7s4wjOjFD";
+
+        Mockito.when(shortUrlRepository.findByShortUrl(anyString()))
+            .thenReturn(Optional.empty());
+        //when
+        Executable executable = () -> shortUrlServiceV1.getLongUrl(shortenUrl);
+
+        //then
+        Assertions.assertThrows(NoSuchElementException.class, executable);
     }
 }

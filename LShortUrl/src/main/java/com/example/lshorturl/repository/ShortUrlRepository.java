@@ -5,5 +5,8 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ShortUrlRepository extends JpaRepository<ShortenUrl, String> {
+
     Optional<ShortenUrl> findByLongUrl(String longUrl);
+
+    Optional<ShortenUrl> findByShortUrl(String shortUrl);
 }

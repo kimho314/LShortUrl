@@ -6,6 +6,7 @@ import com.example.lshorturl.dto.SaveShortenUrlResponseDto;
 import com.example.lshorturl.entity.ShortenUrl;
 import com.example.lshorturl.repository.ShortUrlRepository;
 import com.example.lshorturl.utils.ShortenUrlGenerator;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +45,9 @@ public class ShortUrlServiceV1 {
 
     @Transactional(readOnly = true)
     public String getLongUrl(String shortUrl) {
-        return null;
+        ShortenUrl shortenUrl = shortUrlRepository.findByShortUrl(shortUrl)
+            .orElseThrow(() -> new NoSuchElementException("ShortUrl not found"));
+
+        return shortenUrl.getLongUrl();
     }
 }
