@@ -14,11 +14,14 @@ public class ShortenUrlGeneratorImpl implements ShortenUrlGenerator {
         // 1. 생성한 unique id를 base62 변환
         Base62 standardEncoder = Base62.createInstance();
         byte[] encode = standardEncoder.encode(uniqueId.getBytes(StandardCharsets.UTF_8));
-        String shortenedUri = new String(encode, StandardCharsets.UTF_8);
 
-        // 2. base62 변환 값으로 단춘 url 생성
-        String shortenedUrl = TINY_URL_HOST + shortenedUri;
+        // 2. base62 변환 값으로 단축 url 생성
 
-        return shortenedUrl;
+        return new String(encode, StandardCharsets.UTF_8);
+    }
+
+    @Override
+    public String getShortUrlWithHost(String shortUrl) {
+        return TINY_URL_HOST + shortUrl;
     }
 }

@@ -6,16 +6,12 @@ import com.example.lshorturl.service.ShortUrlServiceV1;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "/api/v1")
+@RequestMapping(value = "/api/v1", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class ShortUrlControllerV1 {
 
@@ -24,17 +20,17 @@ public class ShortUrlControllerV1 {
     /**
      * @title 단축 url 생성
      */
-    @PostMapping("/shortens")
+    @PostMapping("/data/shorten")
     public ResponseEntity<SaveShortenUrlResponseDto> saveShortenUrl(@RequestBody SaveShortenUrlRequestDto request) {
         SaveShortenUrlResponseDto shortenUrl = shortUrlServiceV1.shortenUrl(request);
         return ResponseEntity.ok(shortenUrl);
     }
 
     /**
-     * @title 원본 url redirect
+     * @title url redirect
      */
-    @GetMapping("/shortens")
-    public ResponseEntity<Void> getLongUrl(@RequestParam(value = "shortUrl") String shortUrl) {
+    @GetMapping("/{shortUrl}")
+    public ResponseEntity<Void> getLongUrl(@PathVariable(value = "shortUrl") String shortUrl) {
         String longUrl = shortUrlServiceV1.getLongUrl(shortUrl);
         return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY)
             .location(URI.create(longUrl))

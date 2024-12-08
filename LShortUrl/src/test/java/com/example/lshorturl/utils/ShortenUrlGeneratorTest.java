@@ -26,7 +26,6 @@ public class ShortenUrlGeneratorTest {
         log.info("shortenUrl: {}", shortenUrl);
 
         Assertions.assertNotNull(shortenUrl);
-        Assertions.assertTrue(shortenUrl.contains(ShortenUrlGeneratorImpl.TINY_URL_HOST));
     }
 
 }
