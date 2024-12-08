@@ -19,9 +19,4 @@ public class ShortenUrlGeneratorImpl implements ShortenUrlGenerator {
 
         return new String(encode, StandardCharsets.UTF_8);
     }
-
-    @Override
-    public String getShortUrlWithHost(String shortUrl) {
-        return TINY_URL_HOST + shortUrl;
-    }
 }

@@ -40,7 +40,7 @@ public class ShortUrlServiceV1 {
         ShortenUrl shortenUrl = new ShortenUrl(uniqueId, shortenedUrl, request.longUrl());
         shortUrlRepository.save(shortenUrl);
 
-        return new SaveShortenUrlResponseDto(shortenUrlGenerator.getShortUrlWithHost(shortenedUrl));
+        return new SaveShortenUrlResponseDto(shortenedUrl);
     }
 
     @Transactional(readOnly = true)
