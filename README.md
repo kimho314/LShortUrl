@@ -44,8 +44,22 @@ erDiagram
     }
 ```
 
-### STEP1
+## STEP1
 처음은 가장 단순한 아키텍쳐인 웹 서버와 RDBMS로 시작한다.
 RDBMS로는 가장 인기많은 벤더 중 하나인 MySQL을 골랐다.
 
 ![Alt text here](shorturl1.png)
+
+### average load test
+
+첫번째로 쓰기 작업인 `/data/shorten` API에 대해서 부하 테스트를 실행 하였다. 
+
+- 설정
+  - vus: 100
+  - duration: 30s
+
+![Alt text here](vus100_http_performance.png)
+
+![Alt text here](vus100_http1.png)
+
+![Alt text here](vus100_http2.png)
