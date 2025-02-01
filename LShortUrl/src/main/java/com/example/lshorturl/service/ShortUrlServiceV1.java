@@ -24,19 +24,11 @@ public class ShortUrlServiceV1 {
 
     @Transactional
     public SaveShortenUrlResponseDto shortenUrl(SaveShortenUrlRequestDto request) {
-        // 1. 해당 long url에 해당하는 단축 url이 존재하는지 체크
-        Optional<ShortenUrl> maybeShortenUrl = shortUrlRepository.findByLongUrl(request.longUrl());
-
-        // 2. 존재하면 이미 생성되어 있는 단축 url 반환
-        if (maybeShortenUrl.isPresent()) {
-            return new SaveShortenUrlResponseDto(maybeShortenUrl.get().getShortUrl());
-        }
-
-        // 3. 단축 url 생성
+        // 1. 단축 url 생성
         String uniqueId = NanoIdUtils.randomNanoId();
         String shortenedUrl = shortenUrlGenerator.generate(uniqueId, request.longUrl());
 
-        // 4. long_url, short_url db에 저장
+        // 2. long_url, short_url db에 저장
         ShortenUrl shortenUrl = new ShortenUrl(uniqueId, shortenedUrl, request.longUrl());
         shortUrlRepository.save(shortenUrl);
 
