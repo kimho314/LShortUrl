@@ -13,7 +13,7 @@ export const options = {
 };
 
 export default function() {
-  const shortUrl = '18DuukR408FlYciFKWQHikOL32eLE';
+  const shortUrl = 'w0Ee90oJ6L3VZfGntyfmz4YV97Tf';
   const headers = { 'Content-Type': 'application/json' };
   http.get(`http://localhost:8080/api/v1/${shortUrl}`, { headers });
   sleep(1);

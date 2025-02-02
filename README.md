@@ -72,3 +72,7 @@ RDBMS로는 가장 인기많은 벤더 중 하나인 MySQL을 골랐다.
 ![Alt text here](vus100_read_http_performance.png)
 
 ![Alt text here](vus100_read_http1.png)
+
+- 결과
+  - RDS에서 읽기 작업을 하는데 최대 10s까지 느려지는 현상을 확인 하였다. 쿼리의 실행 계획을 확인 한 결과 total cost가 0.35로 쿼리는 느리지 않은 것으로 확인했다.
+  - RDS로 사용중인 MySQL의 max connection 수를 확인하니 151이었다. 일단 해당 설정값을 2000으로 변경 후 다시 테스트를 진행 하였다. 하지만 테스트 결과에는 변화가 없었다.
