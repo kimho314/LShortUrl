@@ -58,8 +58,17 @@ RDBMS로는 가장 인기많은 벤더 중 하나인 MySQL을 골랐다.
   - vus: 100
   - duration: 30s
 
-![Alt text here](vus100_http_performance.png)
+![Alt text here](vus100_write_http_performance.png)_
 
-![Alt text here](vus100_http1.png)
 
-![Alt text here](vus100_http2.png)
+![Alt text here](vus100_write_http1.png)
+
+두번째로 읽기 작업인 `/{shortUrl}` API에 대해서 부하 테스트를 실행 하였다.
+
+- 설정
+  - vus: 100
+  - duration: 30s
+
+![Alt text here](vus100_read_http_performance.png)
+
+![Alt text here](vus100_read_http1.png)
