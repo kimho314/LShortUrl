@@ -15,8 +15,7 @@ spring:
 logging:
   level:
     root: info
-    web: info
-    sql: debug
-    com.zaxxer.hikari: debug
-    org.hibernate.sql: debug
-    org.hibernate.type.descriptor: debug
+    org.hibernate.SQL: DEBUG
+    com.zaxxer.hikari: DEBUG
+    com.zaxxer.hikari.HikariConfig: TRACE
+#    org.hibernate.resource.jdbc.internal.LogicalConnectionManagedImpl: TRACE
