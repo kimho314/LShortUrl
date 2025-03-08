@@ -27,6 +27,6 @@ public class ShortenUrl {
     @Column(name = "short_url")
     private String shortUrl;
 
-    @Column(name = "long_url")
+    @Column(name = "long_url", unique = true)
     private String longUrl;
 }

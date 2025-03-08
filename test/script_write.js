@@ -13,9 +13,15 @@ export const options = {
 };
 
 export default function() {
+  let vuId = __VU;
+  let iter = __ITER;
+  let id = `vu-${vuId}-iter-${iter}`;
   const payload = JSON.stringify({
-    longUrl: 'https://www.naver.com/cjconnect/service/api/driver/faq/v1/category-meta-list'
+    longUrl: `http://localhost:8080/v1/luna-short-url/greeting?name=${id}`
   });
+  // const payload = JSON.stringify({
+  //   longUrl: `http://localhost:8080/v1/luna-short-url/greeting?name=vu-90-iter-4`
+  // });
   const headers = { 'Content-Type': 'application/json' };
   http.post('http://localhost:8080/api/v1/data/shorten', payload, { headers });
   sleep(1);

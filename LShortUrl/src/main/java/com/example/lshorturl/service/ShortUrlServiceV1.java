@@ -31,6 +31,10 @@ public class ShortUrlServiceV1 {
     @Transactional
     public SaveShortenUrlResponseDto shortenUrl(SaveShortenUrlRequestDto request) {
         log();
+        Optional<ShortenUrl> maybeShortenUrl = shortUrlRepository.findByLongUrl(request.longUrl());
+        if(maybeShortenUrl.isPresent()) {
+            return new SaveShortenUrlResponseDto(maybeShortenUrl.get().getShortUrl());
+        }
         // 1. 단축 url 생성
         String uniqueId = NanoIdUtils.randomNanoId();
         String shortenedUrl = shortenUrlGenerator.generate(uniqueId, request.longUrl());
