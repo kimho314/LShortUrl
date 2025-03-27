@@ -2,7 +2,7 @@ import http from 'k6/http';
 import { sleep } from 'k6';
 
 export const options = {
-  vus: 100,
+  vus: 500,
   duration: '30s',
   cloud: {
     // Project: Default project
@@ -17,12 +17,12 @@ export default function() {
   let iter = __ITER;
   let id = `vu-${vuId}-iter-${iter}`;
   const payload = JSON.stringify({
-    longUrl: `http://localhost:8080/v1/luna-short-url/greeting?name=${id}`
+    longUrl: `http://127.0.0.1:8080/v1/luna-short-url/greeting?name=${id}`
   });
   // const payload = JSON.stringify({
   //   longUrl: `http://localhost:8080/v1/luna-short-url/greeting?name=vu-90-iter-4`
   // });
   const headers = { 'Content-Type': 'application/json' };
-  http.post('http://localhost:8080/api/v1/data/shorten', payload, { headers });
+  http.post('http://host.docker.internal:8080/api/v1/data/shorten', payload, { headers });
   sleep(1);
 }

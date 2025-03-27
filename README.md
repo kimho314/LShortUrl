@@ -64,7 +64,7 @@ RDBMS로는 가장 인기많은 벤더 중 하나인 MySQL을 골랐다.
 
 첫번째로 쓰기 작업인 `/data/shorten` API에 대해서 부하 테스트를 실행 하였다. 
 
-![Alt text here](vus100_write_http_performance.png)_
+![Alt text here](vus100_write_http_performance.png)
 
 ![Alt text here](vus100_write_http1.png)
 
@@ -75,3 +75,85 @@ RDBMS로는 가장 인기많은 벤더 중 하나인 MySQL을 골랐다.
 ![Alt text here](vus100_read_http1.png)
 
 결과: db connection pool size를 20으로 설정했음에도 100명의 동시 접속자의 쓰기/읽기 작업이 가능한다는 것을 알았다. connectoin-pool-size보다 동시 접속자 수가 많더라도 쓰기/읽기 성능이 빠르면 pool size를 동시 접속자 수만큼 늘이지 않아도 충분히 처리할 수 있다는 점을 알 수 있다.
+
+### stress test
+- hikari 설정
+  - maximum-pool-size: 20
+  - conection-timeout: 5000
+  - max-lifetime: 50000
+  - idle-timeout: 50000
+
+- tomcat 설정
+  - thread.max: 200 # thread pool에서 아용할 최대 스레드 갯수
+  - thread.min-spare: 10 # thread pool에서 최소한으로 유지할 스레드 갯수
+  - accept-count: 100 # max-connections 이상의 요청이 들어왔을 때 사용하는 요청 대기열 queue의 사이즈
+  - max-connections: 8192 # 동시에 처리할 수 있는 최대 connection의 갯수
+  - connection-timeout: 60000
+
+- k6 설정
+  - vus: 500
+
+![Alt text here](vus500_write.png)
+
+결과: 0.16%의 http request가 실패 한 것을 확인 하였습니다. 실패율을 0%로 맞추기 위해 thread.max를 vu 갯수와 동일한 500으로 조정하고 다시 테스트를 수행 하였습니다.
+
+- hikari 설정
+  - maximum-pool-size: 20
+  - conection-timeout: 5000
+  - max-lifetime: 50000
+  - idle-timeout: 50000
+
+- tomcat 설정
+  - thread.max: 500
+  - thread.min-spare: 10
+  - accept-count: 100 
+  - max-connections: 8192 
+  - connection-timeout: 60000
+
+- k6 설정
+  - vus: 500
+
+![Alt text here](vus500_write2.png)
+
+결과: 여전히 실패한 http request가 있어서(0.13%) 로그를 확인 해보니 HikariPool에서 connection pool이 모자라서 waiting하는것이 보여서 hikari.maximum-pool-size를 닐려서 다시 테스트 수행하였습니다.
+
+- hikari 설정
+  - maximum-pool-size: 50
+  - conection-timeout: 5000
+  - max-lifetime: 50000
+  - idle-timeout: 50000
+
+- tomcat 설정
+  - thread.max: 500 
+  - thread.min-spare: 10 
+  - accept-count: 100 
+  - max-connections: 8192 
+  - connection-timeout: 60000
+
+- k6 설정
+  - vus: 500
+
+![Alt text here](vus500_write3.png)
+
+결과: 여전히 request fail이 있지만 실패율이 0.08%로 약 38% 줄어든것을 확인 할 수 있었다.
+
+
+- hikari 설정
+  - maximum-pool-size: 60
+  - conection-timeout: 5000
+  - max-lifetime: 50000
+  - idle-timeout: 50000
+
+- tomcat 설정
+  - thread.max: 500 
+  - thread.min-spare: 10
+  - accept-count: 100 
+  - max-connections: 8192 
+  - connection-timeout: 60000
+
+- k6 설정
+  - vus: 500
+
+  ![Alt text here](vus500_write4.png)
+
+  결과: http request 실패율이 0%가 되었고, TPS = 474로 나온 것을 확인하였다.

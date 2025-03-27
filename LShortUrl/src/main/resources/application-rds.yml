@@ -2,11 +2,11 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/shorturl
-    username: root
-    password: ghtjq2959@
+    username: user
+    password: userpassword
     hikari:
       auto-commit: false
-      maximum-pool-size: 20
+      maximum-pool-size: 60
       connection-timeout: 5000
       max-lifetime: 50000
       idle-timeout: 50000
