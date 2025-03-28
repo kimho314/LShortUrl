@@ -6,7 +6,7 @@ spring:
     password: userpassword
     hikari:
       auto-commit: false
-      maximum-pool-size: 60
+      maximum-pool-size: 100
       connection-timeout: 5000
       max-lifetime: 50000
       idle-timeout: 50000
