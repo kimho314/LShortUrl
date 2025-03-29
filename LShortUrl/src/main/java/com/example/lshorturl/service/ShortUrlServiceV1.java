@@ -5,11 +5,13 @@ import com.example.lshorturl.dto.SaveShortenUrlRequestDto;
 import com.example.lshorturl.dto.SaveShortenUrlResponseDto;
 import com.example.lshorturl.entity.ShortenUrl;
 import com.example.lshorturl.repository.ShortUrlRepository;
+import com.example.lshorturl.utils.DataSourceUtil;
 import com.example.lshorturl.utils.ShortenUrlGenerator;
 import com.zaxxer.hikari.HikariDataSource;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,18 +21,18 @@ public class ShortUrlServiceV1 {
 
     private final ShortUrlRepository shortUrlRepository;
     private final ShortenUrlGenerator shortenUrlGenerator;
-    private final HikariDataSource dataSource;
+    private final DataSourceUtil dataSourceUtil;
 
 
-    public ShortUrlServiceV1(ShortenUrlGenerator shortenUrlGenerator, ShortUrlRepository shortUrlRepository, HikariDataSource dataSource) {
+    public ShortUrlServiceV1(ShortenUrlGenerator shortenUrlGenerator, ShortUrlRepository shortUrlRepository, DataSourceUtil dataSourceUtil) {
         this.shortenUrlGenerator = shortenUrlGenerator;
         this.shortUrlRepository = shortUrlRepository;
-        this.dataSource = dataSource;
+        this.dataSourceUtil = dataSourceUtil;
     }
 
     @Transactional
     public SaveShortenUrlResponseDto shortenUrl(SaveShortenUrlRequestDto request) {
-        log();
+        dataSourceUtil.log();
         Optional<ShortenUrl> maybeShortenUrl = shortUrlRepository.findByLongUrl(request.longUrl());
         if(maybeShortenUrl.isPresent()) {
             return new SaveShortenUrlResponseDto(maybeShortenUrl.get().getShortUrl());
@@ -48,16 +50,10 @@ public class ShortUrlServiceV1 {
 
     @Transactional(readOnly = true)
     public String getLongUrl(String shortUrl) {
-        log();
+        dataSourceUtil.log();
         ShortenUrl shortenUrl = shortUrlRepository.findByShortUrl(shortUrl)
             .orElseThrow(() -> new NoSuchElementException("ShortUrl not found"));
 
         return shortenUrl.getLongUrl();
-    }
-
-    public void log(){
-        log.info("Active Connections: " + dataSource.getHikariPoolMXBean().getActiveConnections());
-        log.info("Total Connections: " + dataSource.getHikariPoolMXBean().getTotalConnections());
-        log.info("Idle Connections: " + dataSource.getHikariPoolMXBean().getIdleConnections());
     }
 }

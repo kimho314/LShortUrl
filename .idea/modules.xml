@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/LShortUrl.iml" filepath="$PROJECT_DIR$/.idea/LShortUrl.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/LShortUrl.main.iml" filepath="$PROJECT_DIR$/.idea/modules/LShortUrl.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/LShortUrl.test.iml" filepath="$PROJECT_DIR$/.idea/modules/LShortUrl.test.iml" />
     </modules>
   </component>
 </project>

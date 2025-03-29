@@ -7,6 +7,7 @@ import com.example.lshorturl.dto.SaveShortenUrlRequestDto;
 import com.example.lshorturl.dto.SaveShortenUrlResponseDto;
 import com.example.lshorturl.entity.ShortenUrl;
 import com.example.lshorturl.repository.ShortUrlRepository;
+import com.example.lshorturl.utils.DataSourceUtil;
 import com.example.lshorturl.utils.ShortenUrlGeneratorImpl;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -27,8 +28,11 @@ public class ShortUrlServiceV1Test {
     ShortUrlRepository shortUrlRepository;
     @Mock
     ShortenUrlGeneratorImpl shortenUrlGenerator;
+    @Mock
+    DataSourceUtil dataSourceUtil;
     @InjectMocks
     ShortUrlServiceV1 shortUrlServiceV1;
+
 
     @Test
     @DisplayName("단축 url 생성 - 새로운 단축 url")
