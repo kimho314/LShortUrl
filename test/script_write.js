@@ -2,8 +2,12 @@ import http from 'k6/http';
 import { sleep } from 'k6';
 
 export const options = {
-  vus: 1000,
-  duration: '30s',
+  stages: [
+    {duration: '10s', target: 3000},
+    {duration: '20s', target: 0}
+  ]
+  // vus: 1000,
+  // duration: '30s',
   // cloud: {
   //   // Project: Default project
   //   projectID: 3744276,

@@ -1,6 +1,20 @@
 #version: '3.8'
 
 services:
+  app:
+    build: .
+    container_name: spring-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+      - redis
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/shorturl
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: userpassword
+    networks:
+      - app-network
   mysql:
     image: mysql:8.0
     container_name: mysql
