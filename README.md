@@ -50,7 +50,9 @@ RDBMS로는 가장 인기많은 벤더 중 하나인 MySQL을 골랐다.
 
 ![Alt text here](shorturl1.png)
 
-### average load test
+### stress load test (write)
+첫번째로 쓰기 작업인 `/data/shorten` API에 대해서 부하 테스트를 실행 하였다. 
+
 - hikari 설정
   - maximum-pool-size: 20
   - conection-timeout: 5000
@@ -61,22 +63,13 @@ RDBMS로는 가장 인기많은 벤더 중 하나인 MySQL을 골랐다.
   - vus: 100
   - duration: 30s
 
-
-첫번째로 쓰기 작업인 `/data/shorten` API에 대해서 부하 테스트를 실행 하였다. 
-
 ![Alt text here](vus100_write_http_performance.png)
 
 ![Alt text here](vus100_write_http1.png)
 
-두번째로 읽기 작업인 `/{shortUrl}` API에 대해서 부하 테스트를 실행 하였다.
-
-![Alt text here](vus100_read_http_performance.png)
-
-![Alt text here](vus100_read_http1.png)
-
 결과: db connection pool size를 20으로 설정했음에도 100명의 동시 접속자의 쓰기/읽기 작업이 가능한다는 것을 알았다. connectoin-pool-size보다 동시 접속자 수가 많더라도 쓰기/읽기 성능이 빠르면 pool size를 동시 접속자 수만큼 늘이지 않아도 충분히 처리할 수 있다는 점을 알 수 있다.
 
-### stress test
+
 - hikari 설정
   - maximum-pool-size: 20
   - conection-timeout: 5000
@@ -180,3 +173,93 @@ RDBMS로는 가장 인기많은 벤더 중 하나인 MySQL을 골랐다.
 ![Alt text here](vus3000_write5.png)
 
 결과: tomcat thread 갯수와 hikaricp의 maximum-pool-size를 모두 상향시켜서 tps 1439가 나온것을 확인 하였다.
+
+### stress load test (read)
+두번째로 읽기 작업인 `/{shortUrl}` API에 대해서 부하 테스트를 실행 하였다.
+
+- hikari 설정
+  - maximum-pool-size: 20
+  - conection-timeout: 5000
+  - max-lifetime: 50000
+  - idle-timeout: 50000
+
+- tomcat 설정
+  - thread.max: 200 
+  - thread.min-spare: 10
+  - accept-count: 100 
+  - max-connections: 8192 
+  - connection-timeout: 60000
+
+- k6 설정
+  - vus: 100
+  - duration: 30s
+
+
+
+![Alt text here](vus100_read_http_performance.png)
+
+![Alt text here](vus100_read_http1.png)
+
+
+- hikari 설정
+  - maximum-pool-size: 20
+  - conection-timeout: 5000
+  - max-lifetime: 50000
+  - idle-timeout: 50000
+
+- tomcat 설정
+  - thread.max: 200 
+  - thread.min-spare: 10
+  - accept-count: 100 
+  - max-connections: 8192 
+  - connection-timeout: 60000
+
+- k6 설정
+  - stages: [
+    {duration: '5s', target: 500},
+    {duration: '10s', target: 0}
+  ]
+
+![Alt text here](vus500_read2.png)
+
+- hikari 설정
+  - maximum-pool-size: 20
+  - conection-timeout: 5000
+  - max-lifetime: 50000
+  - idle-timeout: 50000
+
+- tomcat 설정
+  - thread.max: 200 
+  - thread.min-spare: 10
+  - accept-count: 100 
+  - max-connections: 8192 
+  - connection-timeout: 60000
+
+- k6 설정
+  - stages: [
+    {duration: '5s', target: 1000},
+    {duration: '10s', target: 0}
+  ]
+
+![Alt text here](vus1000_read3.png)
+
+- hikari 설정
+  - maximum-pool-size: 20
+  - conection-timeout: 5000
+  - max-lifetime: 50000
+  - idle-timeout: 50000
+
+- tomcat 설정
+  - thread.max: 200 
+  - thread.min-spare: 10
+  - accept-count: 100 
+  - max-connections: 8192 
+  - connection-timeout: 60000
+
+- k6 설정
+  - stages: [
+    {duration: '5s', target: 2000},
+    {duration: '10s', target: 0}
+  ]
+
+![Alt text here](vus2000_read4.png)

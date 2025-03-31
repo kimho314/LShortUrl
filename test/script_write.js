@@ -21,7 +21,7 @@ export default function() {
   let iter = __ITER;
   let id = `vu-${vuId}-iter-${iter}`;
   const payload = JSON.stringify({
-    longUrl: `http://127.0.0.1:8080/v1/luna-short-url/greeting?name=${id}`
+    longUrl: `http://host.docker.internal:8080/v1/luna-short-url/greeting?name=${id}`
   });
   // const payload = JSON.stringify({
   //   longUrl: `http://localhost:8080/v1/luna-short-url/greeting?name=vu-90-iter-4`
