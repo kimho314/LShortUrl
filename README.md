@@ -157,3 +157,26 @@ RDBMS로는 가장 인기많은 벤더 중 하나인 MySQL을 골랐다.
   ![Alt text here](vus500_write4.png)
 
   결과: http request 실패율이 0%가 되었고, TPS = 474로 나온 것을 확인하였다.
+
+  - hikari 설정
+  - maximum-pool-size: 300
+  - conection-timeout: 5000
+  - max-lifetime: 1800000
+  - idle-timeout: 50000
+
+- tomcat 설정
+  - thread.max: 1000 
+  - thread.min-spare: 10
+  - accept-count: 100 
+  - max-connections: 8192 
+  - connection-timeout: 60000
+
+- k6 설정
+  - stages: [
+    {duration: '5s', target: 3000},
+    {duration: '10s', target: 0}
+  ]
+
+![Alt text here](vus3000_write5.png)
+
+결과: tomcat thread 갯수와 hikaricp의 maximum-pool-size를 모두 상향시켜서 tps 1439가 나온것을 확인 하였다.
