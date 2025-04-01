@@ -1,3 +1,7 @@
-redis:
-  host: redis-17293.c340.ap-northeast-2-1.ec2.redns.redis-cloud.com
-  port: 17293
+spring:
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      repositories:
+        enabled: false

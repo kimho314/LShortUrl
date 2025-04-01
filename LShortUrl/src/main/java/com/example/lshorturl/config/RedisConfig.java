@@ -7,19 +7,22 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
 public class RedisConfig {
-    @Value("${redis.host}")
+    @Value("${spring.data.redis.host}")
     private String host;
-    @Value("${redis.port}")
+    @Value("${spring.data.redis.port}")
     private int port;
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
         RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration(host, port);
-        configuration.setUsername("default");
-        configuration.setPassword("leHxLwkylGIq8nluoN5mmDeAIi4NCKwA");
+        configuration.setDatabase(0);
+//        configuration.setUsername("default");
+//        configuration.setPassword("leHxLwkylGIq8nluoN5mmDeAIi4NCKwA");
         return new LettuceConnectionFactory(configuration);
     }
 
@@ -27,6 +30,8 @@ public class RedisConfig {
     public RedisTemplate<?, ?> redisTemplate() {
         RedisTemplate<?, ?> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory());
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setValueSerializer(new StringRedisSerializer());
         return redisTemplate;
     }
 }
