@@ -17,6 +17,7 @@ spring:
     import:
       - "classpath:application-rds.yml"
       - "classpath:application-redis.yml"
+      - "classpath:application-metrics.yml"
 
 logging:
   level:
