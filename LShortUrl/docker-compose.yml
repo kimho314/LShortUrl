@@ -58,10 +58,23 @@ services:
     networks:
       - app-network
 
+  grafana:
+    image: grafana/grafana-oss
+    container_name: grafana
+    restart: unless-stopped
+    ports:
+      - '3000:3000'
+    volumes:
+      - grafana_data:/var/lib/grafana
+    networks:
+      - app-network
+
 volumes:
   mysql_data:
     driver: local
   redis_data:
+    driver: local
+  grafana_data:
     driver: local
 
 networks:
