@@ -263,3 +263,47 @@ RDBMS로는 가장 인기많은 벤더 중 하나인 MySQL을 골랐다.
   ]
 
 ![Alt text here](vus2000_read4.png)
+
+- hikari 설정
+  - maximum-pool-size: 100
+  - conection-timeout: 5000
+  - max-lifetime: 50000
+  - idle-timeout: 50000
+
+- tomcat 설정
+  - thread.max: 200
+  - thread.min-spare: 10
+  - accept-count: 100 
+  - max-connections: 8192 
+  - connection-timeout: 60000
+
+- k6 설정
+  - stages: [
+    {duration: '5s', target: 2000},
+    {duration: '10s', target: 0}
+  ]
+
+  ![Alt text here](vus2000_read5.png)
+
+  - hikari 설정
+  - maximum-pool-size: 100
+  - conection-timeout: 5000
+  - max-lifetime: 50000
+  - idle-timeout: 50000
+
+- tomcat 설정
+  - thread.max: 400
+  - thread.min-spare: 10
+  - accept-count: 100 
+  - max-connections: 8192 
+  - connection-timeout: 60000
+
+- k6 설정
+  - stages: [
+    {duration: '5s', target: 2000},
+    {duration: '10s', target: 0}
+  ]
+
+  ![Alt text here](vus2000_read6.png)
+
+  결과: vu의 갯수를 2000까지 늘려도 TPS가 1700까지 상승 후 오르지 않았다. grafana를 통해 확인 해보니 db connection이 maximum pool size를 넘지는 않아서 maximum tomcat thread의 갯수를 늘려서 테스트 해보니 웹 서버의 cpu부하가 높아져서 http request가 실패나는 것을 확인 하였다. maximum tomcat thread 갯수를 적당히 유지하면서 read TPS을 높일 수 있는 방법을 찾아봐야 겠다.

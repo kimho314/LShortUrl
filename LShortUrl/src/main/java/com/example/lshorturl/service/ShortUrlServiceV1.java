@@ -12,6 +12,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,12 +23,18 @@ public class ShortUrlServiceV1 {
     private final ShortUrlRepository shortUrlRepository;
     private final ShortenUrlGenerator shortenUrlGenerator;
     private final DataSourceUtil dataSourceUtil;
+    private final RedisTemplate redisTemplate;
 
-
-    public ShortUrlServiceV1(ShortenUrlGenerator shortenUrlGenerator, ShortUrlRepository shortUrlRepository, DataSourceUtil dataSourceUtil) {
+    public ShortUrlServiceV1(
+        ShortenUrlGenerator shortenUrlGenerator,
+        ShortUrlRepository shortUrlRepository,
+        DataSourceUtil dataSourceUtil,
+        RedisTemplate redisTemplate
+    ) {
         this.shortenUrlGenerator = shortenUrlGenerator;
         this.shortUrlRepository = shortUrlRepository;
         this.dataSourceUtil = dataSourceUtil;
+        this.redisTemplate = redisTemplate;
     }
 
     @Transactional

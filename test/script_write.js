@@ -19,9 +19,12 @@ export const options = {
 export default function() {
   let vuId = __VU;
   let iter = __ITER;
-  let id = `vu-${vuId}-iter-${iter}`;
+  // let id = `vu-${vuId}-iter-${iter}`;
+  let id = 'hoseop';
+  // let url = `http://host.docker.internal:8080/v1/luna-short-url/greeting?name=${id}`;
+  let url = `http://host.docker.internal:8080/v1/luna-short-url/greeting?name=${id}`;
   const payload = JSON.stringify({
-    longUrl: `http://host.docker.internal:8080/v1/luna-short-url/greeting?name=${id}`
+    longUrl: url
   });
   // const payload = JSON.stringify({
   //   longUrl: `http://localhost:8080/v1/luna-short-url/greeting?name=vu-90-iter-4`
