@@ -332,3 +332,8 @@ RDBMS로는 가장 인기많은 벤더 중 하나인 MySQL을 골랐다.
 ![Alt text here](vus2000_read7.png)
 
 결과: innodb_buffer_pool_size를 2GB까지 올리고 TPS가 2000나오는 것을 확인 했다. innodb_buffer_pool_size를 늘리면 read성능이 향상 되는 것을 확인했다.
+
+## STEP2
+RDS의 부하를 줄이고 읽기 성능을 높이기 위해 메모리에 데이터를 저장하는 Redis를 도입하였다.
+
+![Alt text here](shorturl2.png)
