@@ -10,11 +10,14 @@ import com.example.lshorturl.utils.ShortenUrlGenerator;
 import com.zaxxer.hikari.HikariDataSource;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 @Slf4j
 @Service
@@ -23,13 +26,13 @@ public class ShortUrlServiceV1 {
     private final ShortUrlRepository shortUrlRepository;
     private final ShortenUrlGenerator shortenUrlGenerator;
     private final DataSourceUtil dataSourceUtil;
-    private final RedisTemplate redisTemplate;
+    private final RedisTemplate<String, String> redisTemplate;
 
     public ShortUrlServiceV1(
         ShortenUrlGenerator shortenUrlGenerator,
         ShortUrlRepository shortUrlRepository,
         DataSourceUtil dataSourceUtil,
-        RedisTemplate redisTemplate
+        RedisTemplate<String, String> redisTemplate
     ) {
         this.shortenUrlGenerator = shortenUrlGenerator;
         this.shortUrlRepository = shortUrlRepository;
@@ -40,6 +43,7 @@ public class ShortUrlServiceV1 {
     @Transactional
     public SaveShortenUrlResponseDto shortenUrl(SaveShortenUrlRequestDto request) {
         dataSourceUtil.log();
+
         Optional<ShortenUrl> maybeShortenUrl = shortUrlRepository.findByLongUrl(request.longUrl());
         if(maybeShortenUrl.isPresent()) {
             return new SaveShortenUrlResponseDto(maybeShortenUrl.get().getShortUrl());
@@ -55,12 +59,19 @@ public class ShortUrlServiceV1 {
         return new SaveShortenUrlResponseDto(shortenedUrl);
     }
 
-    @Transactional(readOnly = true)
     public String getLongUrl(String shortUrl) {
         dataSourceUtil.log();
-        ShortenUrl shortenUrl = shortUrlRepository.findByShortUrl(shortUrl)
-            .orElseThrow(() -> new NoSuchElementException("ShortUrl not found"));
 
-        return shortenUrl.getLongUrl();
+        ValueOperations<String, String> valueOps = redisTemplate.opsForValue();
+        String longUrl = valueOps.get(shortUrl);
+
+        if(!StringUtils.hasText(longUrl)){
+            ShortenUrl shortenUrl = shortUrlRepository.findByShortUrl(shortUrl)
+                .orElseThrow(() -> new NoSuchElementException("ShortUrl not found"));
+            longUrl = shortenUrl.getLongUrl();
+            valueOps.set(shortUrl, longUrl, 1, TimeUnit.HOURS);
+        }
+
+        return longUrl;
     }
 }

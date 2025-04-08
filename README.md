@@ -334,6 +334,31 @@ RDBMS로는 가장 인기많은 벤더 중 하나인 MySQL을 골랐다.
 결과: innodb_buffer_pool_size를 2GB까지 올리고 TPS가 2000나오는 것을 확인 했다. innodb_buffer_pool_size를 늘리면 read성능이 향상 되는 것을 확인했다.
 
 ## STEP2
-RDS의 부하를 줄이고 읽기 성능을 높이기 위해 메모리에 데이터를 저장하는 Redis를 도입하였다.
+RDS의 부하를 줄이고 읽기 성능을 높이기 위해 메모리에 데이터를 저장하는 Redis를 도입하였다. Redis를 이용한 이유는 다음과 같습니다. 1) global cache server라 app server의 scale out시에도 캐싱이 제대로 적용된다. 2) 전 세계적으로 사용되는 제품이라 참고 자료가 많다. 3) Spring Data와 잘 연동되어 개발 편의성이 좋다.
 
 ![Alt text here](shorturl2.png)
+
+- hikari 설정
+  - maximum-pool-size: 300
+  - conection-timeout: 5000
+  - max-lifetime: 50000
+  - idle-timeout: 50000
+
+- tomcat 설정
+  - thread.max: 1000
+  - thread.min-spare: 10
+  - accept-count: 100 
+  - max-connections: 8192 
+  - connection-timeout: 60000
+
+- k6 설정
+  - stages: [
+    {duration: '5s', target: 3000},
+    {duration: '10s', target: 0}
+  ]
+
+- innodb_buffer_pool_size = 2048mb
+
+![Alt text here](vus3000_read_redis1.png)
+
+결과: Redis를 도입하기 전에는 모든 부하를 rds에서 감당하기 때무넹 db server의 높은 부하율과 그에 따른 db connection timeout도 빈번하게 발생하였다. redis를 도입하면서 db connection timeout 이슈도 해결되고 db server의 부하율도 많이 내려가면서 시스템의 안정성이 향상되는 것을 확인 하였다. 다만, 단일 app server 만으로는 일정이상 트래픽이 증가하면 app server가 감당하지 못하고 죽는 이슈가 발생하기 때문에 app server를 scale out할 수 있도록 load balancer를 도입하면 좋을 것이다.
