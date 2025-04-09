@@ -42,8 +42,6 @@ public class ShortUrlServiceV1 {
 
     @Transactional
     public SaveShortenUrlResponseDto shortenUrl(SaveShortenUrlRequestDto request) {
-        dataSourceUtil.log();
-
         Optional<ShortenUrl> maybeShortenUrl = shortUrlRepository.findByLongUrl(request.longUrl());
         if(maybeShortenUrl.isPresent()) {
             return new SaveShortenUrlResponseDto(maybeShortenUrl.get().getShortUrl());
@@ -60,8 +58,6 @@ public class ShortUrlServiceV1 {
     }
 
     public String getLongUrl(String shortUrl) {
-        dataSourceUtil.log();
-
         ValueOperations<String, String> valueOps = redisTemplate.opsForValue();
         String longUrl = valueOps.get(shortUrl);
 
@@ -69,6 +65,7 @@ public class ShortUrlServiceV1 {
             ShortenUrl shortenUrl = shortUrlRepository.findByShortUrl(shortUrl)
                 .orElseThrow(() -> new NoSuchElementException("ShortUrl not found"));
             longUrl = shortenUrl.getLongUrl();
+
             valueOps.set(shortUrl, longUrl, 1, TimeUnit.HOURS);
         }
 
