@@ -1,3 +1,4 @@
 rootProject.name = 'spring-cloud-loadbalancer'
 include 'say-hello'
 include 'user'
+include 'lshort-load-balancer'

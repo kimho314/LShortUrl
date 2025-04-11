@@ -1,0 +1,6 @@
+spring:
+  application:
+      name: lshort-load-balancer
+
+server:
+  port: 8888
