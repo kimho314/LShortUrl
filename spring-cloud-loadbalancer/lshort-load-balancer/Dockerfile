@@ -1,5 +1,9 @@
+FROM amazoncorretto:21 AS builder
+WORKDIR /spring-cloud-loadbalancer
+COPY . .
+RUN ./gradlew clean build -x test
+
 FROM amazoncorretto:21
-WORKDIR /app
-COPY . /app
-RUN chmod +x ./gradlew && ./gradlew build -x test
-CMD ["java", "-Xms256m", "-Xmx256m", "-jar", "build/libs/lshort-load-balancer-0.0.1-SNAPSHOT.jar"]
+WORKDIR /spring-cloud-loadbalancer
+COPY --from=builder /spring-cloud-loadbalancer/build/libs/*.jar load-balancer.jar
+CMD ["java", "-Xms512m", "-Xmx512m", "-jar", "load-balancer.jar"]
