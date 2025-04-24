@@ -1,6 +1,8 @@
 spring:
   application:
       name: lshort-load-balancer
+  netty:
+    leak-detection: simple
   config:
     import:
       - "classpath:application-metrics.yml"

@@ -27,4 +27,5 @@ public class CustomServiceInstanceListSupplier implements ServiceInstanceListSup
                 new DefaultServiceInstance(serviceId + "2", serviceId, "host.docker.internal", 8081, false))
         );
     }
+
 }
