@@ -1,6 +1,8 @@
 spring:
   application:
       name: lshort-load-balancer
-
+  config:
+    import:
+      - "classpath:application-metrics.yml"
 server:
   port: 8888

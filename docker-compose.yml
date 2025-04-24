@@ -7,7 +7,6 @@ services:
     depends_on:
       - app1
       - app2
-    environment:
     networks:
       - app-network
 
