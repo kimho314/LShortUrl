@@ -18,10 +18,10 @@ export const options = {
 
 export default function() {
   let iter = __ITER;
-  const urls = ['ix5mYpIoHJ3WqAT0UIvaOR7YBNtK'];
+  const urls = ['dbUhHsleOXNbzxWjuS2fSdJTxgU5'];
   const headers = { 'Content-Type': 'application/json' };
   let shortUrl = urls[iter % urls.length];
   // http.get(`http://host.docker.internal:8080/api/v1/${shortUrl}`, { headers });
-  http.get(`http://host.docker.internal:8080/api/v1/${shortUrl}`, { headers });
+  http.get(`http://localhost:8080/api/v1/${shortUrl}`, { headers });
   sleep(1);
 }
