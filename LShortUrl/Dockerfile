@@ -1,5 +1,9 @@
+FROM amazoncorretto:21 AS builder
+WORKDIR /app
+COPY . .
+RUN ./gradlew clean build -x test
+
 FROM amazoncorretto:21
 WORKDIR /app
-COPY . /app
-RUN chmod +x ./gradlew && ./gradlew build -x test
-CMD ["java", "-Xms1024m", "-Xmx1024m", "-jar", "build/libs/LShortUrl-0.0.1-SNAPSHOT.jar"]
+COPY --from=builder /app/build/libs/*.jar app.jar
+CMD ["java", "-Xms1024m", "-Xmx1024m", "-jar", "app.jar"]
