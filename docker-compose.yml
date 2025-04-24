@@ -1,9 +1,38 @@
 services:
-  app:
+  load-balabcer:
+    build: /spring-cloud-loadbalancer/lshort-load-balancer
+    container_name: lshort-load-balancer
+    ports:
+      - "8888:8888"
+    depends_on:
+      - app1
+      - app2
+    environment:
+    networks:
+      - app-network
+
+  app1:
     build: /LShortUrl
-    container_name: spring-app
+    container_name: spring-app1
     ports:
       - "8080:8080"
+    depends_on:
+      - mysql
+      - redis
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/shorturl
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: userpassword
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+    networks:
+      - app-network
+
+  app2:
+    build: /LShortUrl
+    container_name: spring-app2
+    ports:
+      - "8081:8080"
     depends_on:
       - mysql
       - redis
@@ -29,7 +58,7 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./my.cnf:/etc/mysql/my.cnf
+      - "./my.cnf:/etc/mysql/my.cnf"
     command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
@@ -54,7 +83,7 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - "./prometheus.yml:/etc/prometheus/prometheus.yml"
     networks:
       - app-network
 
@@ -63,7 +92,7 @@ services:
     container_name: grafana
     restart: unless-stopped
     ports:
-      - '3000:3000'
+      - "3000:3000"
     volumes:
       - grafana_data:/var/lib/grafana
     networks:

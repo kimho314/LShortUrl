@@ -23,8 +23,8 @@ public class CustomServiceInstanceListSupplier implements ServiceInstanceListSup
     @Override
     public Flux<List<ServiceInstance>> get() {
         return Flux.just(
-            Arrays.asList(new DefaultServiceInstance(serviceId + "1", serviceId, "localhost", 8080, false))
-//                new DefaultServiceInstance(serviceId + "2", serviceId, "127.0.0.1", 8081, false))
+            Arrays.asList(new DefaultServiceInstance(serviceId + "1", serviceId, "127.0.0.1", 8080, false),
+                new DefaultServiceInstance(serviceId + "2", serviceId, "127.0.0.1", 8081, false))
         );
     }
 }
