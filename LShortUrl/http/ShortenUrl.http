@@ -1,10 +1,14 @@
-POST http://localhost:8080/api/v1/data/shorten
+POST http://localhost:8083/api/v1/data/shorten
 Content-Type: application/json
 
 {
-  "longUrl": "http://host.docker.internal:8080/v1/luna-short-url/home"
+  "longUrl": "http://host.docker.internal:8088/v1/luna-short-url/home"
 }
 
 ###
-GET http://localhost:8080/api/v1/eISK457dLPjz7uNaFK962v5GAocM
+GET http://localhost:8083/api/v1/g3KAgWTlwsl5aooWWkwPnkYeWBeR
+Content-Type: application/json
+
+###
+GET http://localhost:8088/v1/luna-short-url/home
 Content-Type: application/json

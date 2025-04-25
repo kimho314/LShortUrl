@@ -1,12 +1,23 @@
 services:
-  load-balabcer:
-    build: /spring-cloud-loadbalancer/lshort-load-balancer
-    container_name: lshort-load-balancer
+  load-balancer:
+    image: nginx
+    container_name: nginx
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/conf.d/:/etc/nginx/conf.d
     ports:
-      - "8888:8888"
+      - "8083:80"
     depends_on:
       - app1
       - app2
+    networks:
+      - app-network
+
+  home-app:
+    build: /home/home
+    container_name: spring-home-app
+    ports:
+      - "8088:8088"
     networks:
       - app-network
 

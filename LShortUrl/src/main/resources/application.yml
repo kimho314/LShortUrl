@@ -3,7 +3,7 @@ server:
   tomcat:
     threads:
       max: 2000
-      min-spare: 10
+      min-spare: 500
     accept-count: 100
     max-connections: 8192
     connection-timeout: 60000
@@ -12,7 +12,7 @@ server:
 
 spring:
   application:
-          name: LShortUrl
+    name: LShortUrl
   config:
     import:
       - "classpath:application-rds.yml"

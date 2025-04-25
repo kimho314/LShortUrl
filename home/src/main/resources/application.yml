@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: home
+  config:
+    import:
+      - "classpath:application-metrics.yml"
+server:
+  port: 8088
+  tomcat:
+    threads:
+      max: 2000
+      min-spare: 500
+    accept-count: 100
+    max-connections: 8192
+    connection-timeout: 60000
+    mbeanregistry:
+      enabled: true
+
