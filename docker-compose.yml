@@ -44,23 +44,6 @@ services:
     networks:
       - app-network
 
-  app3:
-    build: /LShortUrl
-    container_name: spring-app3
-    ports:
-      - "8082:8080"
-    depends_on:
-      - mysql
-      - redis
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/shorturl
-      SPRING_DATASOURCE_USERNAME: user
-      SPRING_DATASOURCE_PASSWORD: userpassword
-      SPRING_DATA_REDIS_HOST: redis
-      SPRING_DATA_REDIS_PORT: 6379
-    networks:
-      - app-network
-
   mysql:
     image: mysql:8.0
     container_name: mysql

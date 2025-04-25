@@ -25,7 +25,7 @@ public class WebClientConfig {
     @Bean
     public WebClient.Builder webClientBuilder() {
         ConnectionProvider provider = ConnectionProvider.builder("lshort-connection-provider")
-            .maxConnections(3000)
+            .maxConnections(1000)
             .maxIdleTime(Duration.ofMinutes(1))
             .maxLifeTime(Duration.ofMinutes(1))
             .pendingAcquireTimeout(Duration.ofMillis(5000))

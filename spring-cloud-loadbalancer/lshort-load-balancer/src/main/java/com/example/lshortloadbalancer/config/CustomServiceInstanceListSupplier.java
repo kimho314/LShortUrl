@@ -23,8 +23,12 @@ public class CustomServiceInstanceListSupplier implements ServiceInstanceListSup
     @Override
     public Flux<List<ServiceInstance>> get() {
         return Flux.just(
-            Arrays.asList(new DefaultServiceInstance(serviceId + "1", serviceId, "host.docker.internal", 8080, false),
-                new DefaultServiceInstance(serviceId + "2", serviceId, "host.docker.internal", 8081, false))
+            Arrays.asList(
+                new DefaultServiceInstance(serviceId + "1", serviceId, "host.docker.internal", 8080,
+                    false),
+                new DefaultServiceInstance(serviceId + "2", serviceId, "host.docker.internal", 8081,
+                    false)
+            )
         );
     }
 

@@ -1,7 +1,6 @@
 package com.example.lshortloadbalancer.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +20,8 @@ public class ShortUrlController {
     }
 
     @RequestMapping(value = "/api/v1/{shortUrl}")
-    public Mono<ResponseEntity<String>> getLongUrl(@PathVariable(value = "shortUrl") String shortUrl) {
+    public Mono<ResponseEntity<String>> getLongUrl(
+        @PathVariable(value = "shortUrl") String shortUrl) {
         return webClientBuilder.build()
             .get()
             .uri("http://LShortUrl/api/v1/" + shortUrl)
@@ -31,6 +31,7 @@ public class ShortUrlController {
                 } else {
                     return response.createError();
                 }
-            });
+            })
+            .log();
     }
 }

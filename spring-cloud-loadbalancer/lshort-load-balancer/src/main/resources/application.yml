@@ -1,6 +1,6 @@
 spring:
   application:
-      name: lshort-load-balancer
+    name: lshort-load-balancer
   netty:
     leak-detection: simple
   config:
@@ -8,3 +8,7 @@ spring:
       - "classpath:application-metrics.yml"
 server:
   port: 8888
+
+logging:
+  level:
+    web: info
