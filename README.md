@@ -390,3 +390,9 @@ RDS의 부하를 줄이고 읽기 성능을 높이기 위해 메모리에 데이
 ![Alt text here](vus3000_read_redis1.png)
 
 결과: Redis를 도입하기 전에는 모든 부하를 rds에서 감당하기 때문에 db server의 높은 부하율과 그에 따른 db connection timeout도 빈번하게 발생하였다. redis를 도입하면서 db connection timeout 이슈도 해결되고 db server의 부하율도 많이 내려가면서 시스템의 안정성이 향상되는 것을 확인 하였다. 다만, 단일 app server 만으로는 일정이상 트래픽이 증가하면 app server가 감당하지 못하고 죽는 이슈가 발생하기 때문에 app server를 scale out할 수 있도록 load balancer를 도입하면 좋을 것이다.
+
+## STEP3
+
+웹 서버 당 부하를 줄이기 위해 scale-out이 필요하고, 이를 위해 nginx를 load balancer로 이용하여 웹 서버를 늘렸을때 트래픽이 고르게 분산되도록 설계 하였다.
+
+![Alt text here](shorturl3.png)
