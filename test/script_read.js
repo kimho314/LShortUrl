@@ -3,7 +3,7 @@ import { sleep } from 'k6';
 
 export const options = {
   stages: [
-    {duration: '60s', target: 2000},
+    {duration: '5s', target: 2000},
     {duration: '10s', target: 0}
   ]
   // vus: 100,
@@ -21,7 +21,7 @@ export default function() {
   // const urls = ['eqP5FsNmiHHcGqSTgquNuWr5UX8b'];
   const headers = { 'Content-Type': 'application/json' };
   // let shortUrl = urls[iter % urls.length];
-  const shortUrl = 'g3KAgWTlwsl5aooWWkwPnkYeWBeR';
+  const shortUrl = '15rmb0kBrVSickXetgrP3H4PB4ETM';
   // http.get(`http://host.docker.internal:8080/api/v1/${shortUrl}`, { headers });
   http.get(`http://host.docker.internal:8083/api/v1/${shortUrl}`, { headers });
   sleep(1);

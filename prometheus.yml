@@ -7,7 +7,7 @@ scrape_configs:
           [
             "host.docker.internal:8080",
             "host.docker.internal:8081",
-            "host.docker.internal:8888",
+            "host.docker.internal:8088",
           ]
         labels:
           application: "lshorturl"
