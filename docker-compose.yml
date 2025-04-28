@@ -2,7 +2,7 @@ services:
   load-balancer:
     image: nginx
     container_name: nginx
-    cpus: "3.0"
+    cpus: "5.0"
     mem_limit: "512M"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
@@ -27,8 +27,8 @@ services:
 
   backend:
     build: /LShortUrl
-    cpus: "3.0"
-    mem_limit: "1G"
+    cpus: "5.0"
+    mem_limit: "2G"
     # ports:
     #   - "8080:8080"
     expose:

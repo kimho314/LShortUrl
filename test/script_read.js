@@ -21,7 +21,7 @@ export default function() {
   // const urls = ['eqP5FsNmiHHcGqSTgquNuWr5UX8b'];
   const headers = { 'Content-Type': 'application/json' };
   // let shortUrl = urls[iter % urls.length];
-  const shortUrl = 'klgbhXruKhbPyaJng9XatbDFPBnP';
+  const shortUrl = '11ER2BfQ8p3oXtonSJd796ZgAE0a1';
   // http.get(`http://host.docker.internal:8080/api/v1/${shortUrl}`, { headers });
   http.get(`http://host.docker.internal:80/api/v1/${shortUrl}`, { headers, redirects: 0 });
   sleep(1);
