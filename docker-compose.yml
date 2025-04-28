@@ -10,15 +10,14 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - app1
-      - app2
+      - backend
       - home-app
     networks:
       - app-network
 
   home-app:
     build: /home
-    container_name: spring-home-app
+    container_name: home-app
     cpus: "2.0"
     mem_limit: "1G"
     ports:
@@ -26,32 +25,16 @@ services:
     networks:
       - app-network
 
-  app1:
+  backend:
     build: /LShortUrl
-    container_name: spring-app1
     cpus: "3.0"
     mem_limit: "1G"
-    ports:
-      - "8080:8080"
-    depends_on:
-      - mysql
-      - redis
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/shorturl
-      SPRING_DATASOURCE_USERNAME: user
-      SPRING_DATASOURCE_PASSWORD: userpassword
-      SPRING_DATA_REDIS_HOST: redis
-      SPRING_DATA_REDIS_PORT: 6379
-    networks:
-      - app-network
-
-  app2:
-    build: /LShortUrl
-    container_name: spring-app2
-    cpus: "3.0"
-    mem_limit: "1G"
-    ports:
-      - "8081:8080"
+    # ports:
+    #   - "8080:8080"
+    expose:
+      - "8080"
+    deploy:
+      replicas: 2
     depends_on:
       - mysql
       - redis
