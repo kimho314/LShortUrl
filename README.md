@@ -393,6 +393,34 @@ RDS의 부하를 줄이고 읽기 성능을 높이기 위해 메모리에 데이
 
 ## STEP3
 
+load balancer로 어떤 것을 사용할까 고민하닥 결론적으로 참고할 차료도 많고 손쉬운 설정으로 load balancer를 구현할 수 있는 nginx를 사용하기로 했다.
 웹 서버 당 부하를 줄이기 위해 scale-out이 필요하고, 이를 위해 nginx를 load balancer로 이용하여 웹 서버를 늘렸을때 트래픽이 고르게 분산되도록 설계 하였다.
 
 ![Alt text here](shorturl3.png)
+
+- hikari 설정
+
+  - maximum-pool-size: 300
+  - conection-timeout: 5000
+  - max-lifetime: 50000
+  - idle-timeout: 50000
+
+- tomcat 설정
+
+  - thread.max: 1000
+  - thread.min-spare: 10
+  - accept-count: 100
+  - max-connections: 8192
+  - connection-timeout: 60000
+
+- k6 설정
+
+  - stages: [
+    {duration: '5s', target: 3000},
+    {duration: '10s', target: 0}
+    ]
+
+  ![Alt text here](vus3000_read_redis2.png)
+
+  결과: load balancer와 두 개의 was로 구성해서 부하 테스트를 해보니 TPS가 1500대가 나오는 것을 확인 하였다. 오히려 load balancer없이 단일 was로 부하 테스트 했을 때보다 TPS는 떨어졌지만, was의 cpu사용률이 300% -> 100%로 감소하는 것을 확인하였다. 이로써 웹 서버를 좀 더 안정적으로 유지할 수 있는것을 확인 하였다.
+  TPS를 더 높을 수 있는 방법을 고민해야 겠다.
